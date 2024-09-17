@@ -1,0 +1,187 @@
+#+TITLE:     docs.temporal.io Notes
+#+AUTHOR:    Jeff Romine
+#+EMAIL:     jromineut@gmail.com
+#+DATE:      2024-09-11 Wed
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+OPTIONS: ^:{} author:nil email:nil creator:nil timestamp:nil
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+#+XSLT:
+#+STARTUP: showevery
+
+* [[https://docs.temporal.io/temporal#temporal-application][What is Temporal?]]
+
+** [[https://dominik-tornow.medium.com/handling-failures-from-first-principles-1ed976b1b869][Handling Failures From First Principles (Dominik Tornow)]]
+
+
+* Temporal SDKS
+
+* [[https://temporal.io/blog/deploying-temporal-workers-to-google-cloud-run][Deploying Temporal Workers to Google Cloud Run]]
+
+
+* Get Started with Temporal
+
+** Set up a local development environment for Temporal and TypeScript
+
+*** Install Node.js
+
+
+*** Set up the Temporal TypeScript SDK
+
+**** Start a Temporal project from scratch
+
+#+begin_src shell-script
+npx @temporalio/create@latest ./my-app
+#+end_src
+
+**** Add Temporal to an existing project
+
+#+begin_quote
+npm install @temporalio/client @temporalio/worker @temporalio/workflow @temporalio/activity
+#+end_quote
+
+*** Set up a local Temporal Service for development with Temporal CLI
+
+**** macOS
+
+***** Install latest version of CLI
+
+#+begin_src shell-script
+brew install temporal
+#+end_src
+
+***** Start temporal server
+
+#+begin_quote
+temporal server start-dev
+#+end_quote
+
+****** Start Temporal Server with UI on a Different Port
+
+#+begin_src shell-script
+temporal server start-dev --ui-port 8080
+#+end_src
+
+
+****** Start Temporal Server with a persistent database
+
+#+begin_src shell-script
+temporal server start-dev --db-filename your_temporal.db
+#+end_src
+
+** [[https://learn.temporal.io/getting_started/typescript/first_program_in_typescript/][Run your first Temporal application with the TypeScript SDK]]
+
+
+*** Download the example application
+
+#+begin_src shell-script
+git clone https://github.com/temporalio/money-transfer-project-template-ts/
+cd money-transfer-project-template-ts
+#+end_src
+
+*** Explore the applications's Workflow and Activity Definitions
+
+#+begin_quote
+A Temporal Application is a set of Temporal Workflow Executions, which
+are reliable, durable function executions. These Workflow Executions
+orchestrate the execution of Activities, which execute a single,
+well-defined action, such as calling another service, transcoding a
+media file, or sending an email message.
+
+You use a Workflow Definition to define the Workflow Execution's
+constraints. A Workflow Definition in TypeScript is a regular
+TypeScript function that accepts some input values.
+
+The sample application in this tutorial models a money transfer
+between two accounts. Money comes out of one account and goes into
+another. However, there are a few things that can go wrong with this
+process. If the withdrawal fails, then there's no need to attempt a
+deposit. But if the withdrawal works but the deposit fails, then the
+money needs to go back to the original account.
+
+This is what the Workflow Definition looks like for this kind of
+process:
+#+end_quote
+
+#+begin_quote
+Notice that the PaymentDetails interface includes a referenceId
+field. Some APIs let you send a unique "idempotency key" along with
+the transaction details to guarantee that if you retry the transaction
+due to some kind of failure, the API you're calling will use the key
+to ensure it only executes the transaction once.
+#+end_quote
+
+**** Activities
+
+#+begin_quote
+Use Activities for your business logic, and use Workflows to coordinate the Activities.
+#+end_quote
+
+
+*** [[https://learn.temporal.io/getting_started/typescript/first_program_in_typescript/#start-the-workflow][Start the Workflow]]
+
+**** src/clients.ts
+
+**** Start the server
+
+#+begin_src shell-script
+temporal server start-dev --db-filename your_temporal.db --ui-port 8080
+#+end_src
+
+**** Run client.ts
+
+#+begin_src shell-script
+npm run client
+# ts-node src/client.ts
+#+end_src
+
+**** View the State of the Workflow with the Temporal Web UI
+
+
+#+begin_example
+
+#+end_example
+
+**** Start the Worker
+
+#+begin_quote
+A Worker
+
+- listens only to the Task Queue that it is registered to.
+- can only execute Workflows and Activities registered to it.
+- knows which piece of code to execute from Tasks that it gets from
+  the Task Queue.
+#+end_quote
+
+
+*** [[https://learn.temporal.io/getting_started/typescript/first_program_in_typescript/#-simulate-failures][Simulate failures]]
+
+
+**** Recover from a server crash
+
+**** Recover from an unknown error in an Activity
+
+
+***** [[http://localhost:8080/namespaces/default/workflows/pay-invoice-801/b055a0a3-e98b-4014-9c56-d56662b91b81/history][history->pending activities]]
+
+** [[https://learn.temporal.io/getting_started/typescript/hello_world_in_typescript/][Build a Temporal Application from scratch in TypeScript]]
+
+*** Prerequisites
+
+*** Create a new project
+
+#+begin_src shell-script
+mkdir hello-world
+cd hello-world
+#+end_src
+
+*** Add a unit test
+
+** [[https://learn.temporal.io/courses/temporal_101/typescript/][Temporal 101 with TypeScript]]
